@@ -26,8 +26,11 @@ public class Magpie4 {
         }
         else if (findKeyword(statement, "?") >= 0){
             response = transformQuestion(statement);
-        }
+       }
 
+        //else if ( statement.substring(statement.length() - 1) == "?"){
+           // response = transformQuestion(statement);
+       // }
 
         else if (findKeyword(statement, "no") >= 0)
         {
@@ -194,15 +197,23 @@ public class Magpie4 {
     private String transformQuestion(String statement)
     {
         //  Remove the final period, if there is one
-        statement = statement.trim();
-        String lastChar = statement.substring(statement.length() - 1);
-        //(findKeyword(statement, "favorite")>= 0);
-        int psn1 = findKeyword (statement, "favorite", 0);
-       // int psnOfMe = findKeyword (statement, "?", psnOfYou + 8);
-        String restOfStatement = statement.substring(psn1 + 8).trim();
-        return "I don't have a favorite " + restOfStatement + ", what's yours?";
+        if (findKeyword(statement, "favorite") >= 0) {
+            statement = statement.trim();
+            String lastChar = statement.substring(statement.length() - 1);
+            String questionMark = "?";
+            int pos = statement.indexOf(questionMark);
+            statement = statement.substring(0, pos);
+            //(findKeyword(statement, "favorite")>= 0);
+            //statement = statement.substring(0, ) ;
+            int psn1 = findKeyword(statement, "favorite", 0);
+            // int psnOfMe = findKeyword (statement, "?", psnOfYou + 8);
+            String restOfStatement = statement.substring(psn1 + 8).trim();
+            return "I don't have a favorite " + restOfStatement + ", what's yours?";
+        }
 
-
+        else{
+            return "I don't understand. Can you repeat the question?";
+        }
         // int psnOfYou = findKeyword (statement, "why", 0);
         //int psnOfMe = findKeyword (statement, "me", psnOfYou + 3);
 
@@ -217,7 +228,7 @@ public class Magpie4 {
      */
     private String getRandomResponse()
     {
-        final int NUMBER_OF_RESPONSES = 4;
+        final int NUMBER_OF_RESPONSES = 5;
         double r = Math.random();
         int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
         String response = "";
@@ -237,6 +248,9 @@ public class Magpie4 {
         else if (whichResponse == 3)
         {
             response = "You don't say.";
+        }
+        else if (whichResponse == 4){
+            response = "Wowee.";
         }
 
         return response;
